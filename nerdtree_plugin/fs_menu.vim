@@ -53,6 +53,7 @@ if exists('*system')
     call NERDTreeAddMenuItem({'text': 'Run (s)ystem command in this directory', 'shortcut':'s', 'callback': 'NERDTreeSystemCommand'})
 endif
 
+call NERDTreeAddMenuItem({'text': 'Reset project (w)orking directory', 'shortcut': 'w', 'callback': 'RestartNERDTreeWithNewPath'})
 "FUNCTION: s:inputPrompt(action){{{1
 "returns the string that should be prompted to the user for the given action
 "
@@ -482,3 +483,28 @@ function! NERDTreeSystemCommand()
 endfunction
 
 " vim: set sw=4 sts=4 et fdm=marker:
+
+" FUNCTION: RestartNERDTreeWithNewPath() {{{1
+function! RestartNERDTreeWithNewPath()
+    " 現在選択されているノードの取得
+    let selectedNode = g:NERDTreeFileNode.GetSelected()
+    if empty(selectedNode)
+        echo "No node selected."
+        return
+    endif
+
+    " 選択されたノードのパスを取得
+    let path = selectedNode.path.str()
+
+    " 現在のタブとウィンドウの位置を保持
+    let currentTab = tabpagenr()
+    let currentWindow = winnr()
+
+    " NERDTreeを閉じて、選択されたパスで再起動
+    call nerdtree#quit()
+    execute 'NERDTree ' . path
+
+    " カーソル位置を復元
+    call nerdtree#exec(currentWindow . 'wincmd w', 1)
+    call nerdtree#exec('tabnext ' . currentTab, 1)
+endfunction
