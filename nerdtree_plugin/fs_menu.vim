@@ -1,7 +1,7 @@
 " ============================================================================
 " File:        fs_menu.vim
 " Description: plugin for the NERD Tree that provides a file system menu
-" Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
+" Maintainer:  mizuirorivi <onodaha at gmail dot com>
 " License:     This program is free software. It comes without any warranty,
 "              to the extent permitted by applicable law. You can redistribute
 "              it and/or modify it under the terms of the Do What The Fuck You
@@ -489,7 +489,7 @@ function! RestartNERDTreeWithNewPath()
     
     let selectedNode = g:NERDTreeFileNode.GetSelected()
     if empty(selectedNode)
-        echo "No node selected."
+        call nerdtree#echoWarning('No node selected.')
         return
     endif
 
